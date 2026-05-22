@@ -7,22 +7,17 @@ def sign_in():
     username = entry_username.get()
     password = entry_password.get()
 
-    try:
-        with open("users.txt", "r") as file:
-            users = file.readlines()
+    with open("users.txt", "r") as file:
+        users = file.readlines()
 
-        for user in users:
-            saved_user, saved_pass = user.strip().split(",")
+    for user in users:
+        stored_username, stored_password = user.strip().split(",")
+        if username == stored_username and password == stored_password:
+            messagebox.showinfo("Success", "Sign In Successful!")
+            main_menu(username)
+            return
 
-            if username == saved_user and password == saved_pass:
-                messagebox.showinfo("Success", "Login Successful!")
-                main_menu(username)
-                return
-
-        messagebox.showerror("Error", "Invalid Username or Password")
-
-    except FileNotFoundError:
-        messagebox.showerror("Error", "No users found. Please sign up first.")
+    messagebox.showerror("Error", "Invalid Username or Password!")
 
 
 # File write Sign Up function
@@ -31,9 +26,11 @@ def sign_up():
     password = entry_password.get()
 
     with open("users.txt", "a") as file:
-        file.write(username + "," + password + "\n")
+        file.write(f"{username},{password}\n")
 
-    messagebox.showinfo("Success", "Account Created Successfully!")
+    messagebox.showinfo("Success", "Sign Up Successful!")
+    sign_in_window()
+   
 
 
 # sign in window
@@ -75,12 +72,12 @@ def sign_up_window():
     tk.Button(root, text="Sign Up", command=sign_up).pack()
     tk.Button(root, text="Go to Sign In", command=sign_in_window).pack()
 
-
 # main menu window
 def main_menu(username):
     clear_window()
-    tk.Label(root, text=f"Welcome {username}", font=("Arial", 16)).pack(pady=50)
 
+    tk.Label(root, text=f"Welcome, {username}!").pack()
+    tk.Button(root, text="Sign Out", command=sign_in_window).pack()
 
 # clear screen function
 def clear_window():

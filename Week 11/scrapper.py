@@ -34,9 +34,20 @@ def get_cars_data(car):
 
 #create a function to scrape data from the webpage, the above code can be used inside the function
 def scrapper():
-    pass
+    car=input("Enter the car name: ")
+    data=get_cars_data(car)
+    for car in data:
+        print(f"Name: {car['name']}, Price: {car['price']}")
+        
+
 
 
 # create a function to save data to a csv file
 def save_to_file(data, filename):
-    pass
+    import csv
+    with open (filename, 'w', newline='') as file:
+        writer=csv.writer(file)
+        writer.writerow(['Name', 'Price'])
+        for car in data:
+            writer.writerow([car['name'], car['price']])
+            
